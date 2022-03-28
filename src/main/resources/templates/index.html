@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=family=Nanum+Gothic&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="basic.js"></script>
+    <script src="/js/basic.js"></script>
     <title>나만의 셀렉샵</title>
 </head>
 
@@ -35,14 +35,23 @@
 
 
         <h2>항해99 바다 위 대나무숲<br><br>
-            <li th:if="${username}"><span th:text="${username}"></span> 님,<br><br></li>
+            <li th:if="${username}"><span id='username' th:text="${username}"></span> 님,<br><br></li>
             맘껏 외치세요 무야호!
         </h2>
     </div>
-    <div class="to-write">
+    <div th:if="${username}" class="to-write">
         <li>
-            <button type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>
+            <button type="button" class="btn btn-primary" id="write"><b>글 쓰 기</b></button>
         </li>
+    </div>
+</div>
+    <div class="area-write dn">
+        <div class="form-floating mb-3">
+            <input type="title" class="form-control" id="title" placeholder="제 목">
+        </div>
+        <textarea class="field" placeholder="공유하고 싶은 소식을 입력해주세요" name="contents" id="contents" cols="30" rows="10"></textarea>
+        <img src="/images/send.png" alt="" onclick="writePost()">
+
     </div>
     <div id="cards-box" class="area-read">
         <div class="card">
@@ -63,6 +72,6 @@
 
         </div>
     </div>
-</div>
+
 </body>
 </html>
