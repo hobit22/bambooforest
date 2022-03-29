@@ -12,6 +12,64 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="/js/basic.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            // HTML 문서를 로드할 때마다 실행합니다.
+            //getBoard();
+            $('#write').on('click', function(){
+                $('.area-write').removeClass('dn');
+            });
+
+            $('.close').on('click', function () {
+                $('.popup-container').removeClass('dn').addClass('dn');
+            })
+        })
+
+        // 메모를 불러와서 보여줍니다.
+        function getBoard() {
+            // 1. 기존 메모 내용을 지웁니다.
+            $('#cards-box').empty();
+            // 2. 메모 목록을 불러와서 HTML로 붙입니다.
+
+            $.ajax({
+                url : "/api/index",
+                type : "get",
+                data : '',
+                success : function(response){
+                    for(let i = 0 ; i < response.length; i++){
+                        let board = response[i];
+                        let modifiedAt = board.modifiedAt;
+                        let user = board.user;
+                        let title = board.title;
+                        let content = board.content;
+
+                        let tmpHtml = `
+                    <div className="card">
+                        <div className="metadata">
+                            <div className="date" >
+                                ${modifiedAt}
+                            </div>
+                            <div className="name">
+                                ${user}
+                            </div>
+                        </div>
+                        <h2>${title}</h2>
+                        <div className="contents">
+                            <div id="1-contents" className="text">
+                            ${content}
+                            </div>
+                        </div>
+                        `
+                        $("#cards-box").append(tmpHtml);
+                    }
+
+
+                        }
+            });
+
+        }
+    </script>
     <title>나만의 셀렉샵</title>
 </head>
 
@@ -53,24 +111,9 @@
         <img src="/images/send.png" alt="" onclick="writePost()">
 
     </div>
-    <div id="cards-box" class="area-read">
-        <div class="card">
-            <div class="metadata">
-                <div class="date">
-                    October 10, 2020
-                </div>
-                <div class="name">
-                    anonymous
-                </div>
-            </div>
-            <h2>asd</h2>
-            <div class="contents">
-                <div id="1-contents" class="text">
-                    dsafnkalfklewakflekelafkleajfkleafkldsankflenwaklfnekwlafneklwanfkelawnfkelanfkleanfklew
-                </div>
-            </div>
 
-        </div>
+    <div id="cards-box" class="area-read index">
+
     </div>
 
 </body>

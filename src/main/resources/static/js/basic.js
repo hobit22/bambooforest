@@ -54,22 +54,22 @@ $(document).ready(function () {
 // 메모를 불러와서 보여줍니다.
 function getMessages() {
     // 1. 기존 메모 내용을 지웁니다.
-    $('#cards-box').empty();
+    $('#cards-box.index').empty();
     // 2. 메모 목록을 불러와서 HTML로 붙입니다.
 
     $.ajax({
-        url : "/post",
+        url : "/api/index",
         type : "get",
         data : '',
         success : function(response){
             console.log(response);
             for(let i = 0 ; i < response.length; i++){
-                let post =response[i];
-                let id = post.id;
-                let title = post.title;
-                let content = post.content;
-                let username = post.username;
-                let modifiedAt = post.modifiedAt;
+                let board =response[i];
+                let id = board.id;
+                let title = board.title;
+                let content = board.content;
+                let username = board.user.username;
+                let modifiedAt = board.modifiedAt;
                 addHTML(id, title, username, content, modifiedAt);
             }
         }
@@ -82,6 +82,7 @@ function getMessages() {
 function addHTML(id, title, username, content, modifiedAt) {
     // 1. HTML 태그를 만듭니다.
     let tempHtml = `
+    <a href="/api/board/${id}">
         <div class="card">
         <input type="hidden" name="id" value="${id}">
             <div class="metadata">
@@ -100,9 +101,10 @@ function addHTML(id, title, username, content, modifiedAt) {
             </div>
 
         </div>
+    </a>
     `;
     // 2. #cards-box 에 HTML을 붙인다.
-    $('#cards-box').append(tempHtml);
+    $('#cards-box.index').append(tempHtml);
 }
 
 // 메모를 생성합니다.
@@ -115,15 +117,15 @@ function writePost() {
     let content = $("#contents").val();
     let title = $("#title").val();
     let username = $("#username").text();
-    console.log(content.length);
+
     if( !isValidContents(content) ) return;
     if( !isValidContents(title) ) return;
-    let data = {'title' : title, 'content' : content};
-
+    let data = {"title" : title, "content" : content};
+    console.log(data);
     $.ajax({
-        url : "/post/register",
+        url : "/api/board",
         type : "POST",
-        contentType: 'application/json',
+        contentType: 'application/json', // json 일때 postMapping @RequestBody 필요함
         data : JSON.stringify(data),
         success : function(response){
             console.log(response);

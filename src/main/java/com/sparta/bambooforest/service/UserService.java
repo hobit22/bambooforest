@@ -41,10 +41,7 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
 
-        // 사용자 ROLE 확인
-        UserRoleEnum role = UserRoleEnum.USER;
-
-        User user = new User(username, password, email, role);
+        User user = new User(username, password, email);
         userRepository.save(user);
     }
 

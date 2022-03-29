@@ -227,7 +227,7 @@ a {
 
 .dn{ display : none !important;}
 
-.area-write{
+.area-write, #reply-box{
     margin: 10px auto;
     width:538px;
 }
